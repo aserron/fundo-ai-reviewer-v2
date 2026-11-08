@@ -1,8 +1,8 @@
-# Fundo AI Engineer Take-Home Challenge — Specification
+# Fundo Transaction AI Reviewer — System Specification
 
 We are building an AI-assisted transaction auditing and credit impact pipeline for **Fundo**, a working capital lender for small and medium-sized businesses (SMBs). When a business applies for funding, Fundo analyzes 90 days of Plaid bank transactions using a legacy deterministic keyword engine to classify cash flows into 13 risk and revenue groups, estimate monthly operating revenue, detect competing debt obligations, and compute a credit offer. Because raw bank memos are noisy, overloaded, and prone to regex edge cases, the legacy matcher frequently misclassifies loan disbursements as revenue, wipes out legitimate card settlements due to keyword collisions, or misses non-standard overdraft and Merchant Cash Advance (MCA) signals.
 
-The high-level goal of this project is to design and build a hybrid **Deterministic + LLM Reviewer** that audits the legacy engine's classifications, enforces strict accounting invariants, and quantifies how label corrections shift real underwriting offers and risk exposure. Starting from a clean slate, you will define your architecture, generate a realistic synthetic Plaid benchmark dataset, build the Reviewer and credit feature engine under a strict `<$10` API budget, and deliver a one-command reproducible pipeline alongside a production rollout design.
+The high-level goal of this project is to design and build a hybrid **Deterministic + LLM Reviewer** that audits the legacy engine's classifications, enforces strict accounting invariants, and quantifies how label corrections shift real underwriting offers and risk exposure. Starting from a clean slate, this specification defines the domain invariants, mathematical formulas, and system deliverables required to generate a realistic synthetic Plaid benchmark dataset, build the Reviewer and credit feature engine under a strict `<$10` API budget, and deliver a one-command reproducible pipeline alongside a production rollout design.
 
 ---
 
@@ -63,16 +63,16 @@ A transaction counts as operating revenue (`is_revenue = True`) **if and only if
 
 ---
 
-## 3. Challenge Deliverables
+## 3. System Deliverables
 
 ### Step 0 — Architecture, Stack & File Layout Design (Prerequisite)
-Before generating data or writing application code, define your technical plan and key architectural tradeoffs (`ARCHITECTURE.md` / `IMPLEMENTATION_PLAN.md`):
-- **Runtime & Minimal Dependencies:** Select your toolchain and justify every external dependency against the radical simplicity constraint.
+Before generating data or writing application code, define the technical plan and key architectural tradeoffs (`ARCHITECTURE.md` / `IMPLEMENTATION_PLAN.md`):
+- **Runtime & Minimal Dependencies:** Select the toolchain and justify every external dependency against the radical simplicity constraint.
 - **File & Module Layout:** Define the directory structure for source code, synthetic data, cached LLM artifacts, evaluation outputs, and automated tests.
 - **Offline Replay & Telemetry Mechanism:** Decide how LLM responses, token counts, and API spend will be persisted (e.g., flat JSON/JSONL, SQLite, content-addressed store) so the entire pipeline can be replayed offline with zero API keys.
 - **Code vs. Model Architecture:** Design the exact boundary between deterministic code (triage, sanitization, financial invariant locks) and probabilistic LLM inference.
 
-Since real bank data cannot be shared, **you will then generate a realistic synthetic Plaid transaction dataset** (~2,000–2,500 transactions across ~10 small businesses over a 90-day window) along with a baseline Legacy Keyword Engine that exhibits the flaws described above.
+Since real bank data cannot be shared, **first generate a realistic synthetic Plaid transaction dataset** (~2,000–2,500 transactions across ~10 small businesses over a 90-day window) along with a baseline Legacy Keyword Engine that exhibits the flaws described above.
 
 ### Part 1 — The Reviewer & The Code/Model Boundary
 Build a **Reviewer** that audits the Legacy Keyword Engine's labels on your dataset:
@@ -131,11 +131,11 @@ Write a concise 1-page production design covering:
 
 ---
 
-## 4. Engineering & Evaluation Principles
+## 4. Engineering & Operational Principles
 
-1. **One-Command Reproducibility & Live Debrief Readiness:**
-   - The evaluator must be able to run your full pipeline, tests, and evaluation in **one or a few copy-paste commands** from the terminal, including an offline/cached mode that does not require a live API key.
-   - Your entrypoint should also support auditing an external/unseen transaction file during a live technical debrief.
+1. **One-Command Reproducibility & External File Evaluation:**
+   - The full pipeline, tests, and evaluation must run in **one or a few copy-paste commands** from the terminal, including an offline/cached mode that does not require a live API key.
+   - The CLI entrypoint must also support auditing an external/unseen transaction file (`JSON` or `JSONL`) for ad-hoc validation.
 2. **Simplicity & Focus on Real Business Requirements:** Discard any technology, framework, infrastructure daemon, GUI, authentication layer, or design pattern whose only justification is making the code look more "enterprise" or modular. Every line of code should directly serve transaction auditing accuracy, financial invariant safety, credit impact analysis, or testability.
-3. **Explicit Tradeoff Documentation (ADRs):** Document the key architectural tradeoffs you made (and what you intentionally left out) with their pros and cons.
-4. **AI Tool Disclosure:** Include a brief note in your deliverable disclosing what AI coding assistants/models you used and how you verified correctness.
+3. **Explicit Tradeoff Documentation (ADRs):** Document the key architectural tradeoffs made (and what was intentionally left out) with their pros and cons.
+4. **AI Tool Disclosure:** Include a brief note in the deliverable disclosing what AI coding assistants/models were used and how correctness was verified.

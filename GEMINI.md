@@ -1,7 +1,7 @@
 # Agent & Engineering Guidelines — Fundo AI Reviewer (v2 Parallel Track)
 
 ## Purpose of This Repository
-This repository is a clean-slate starting point for implementing the **Fundo AI Engineer Challenge** ([`CHALLENGE.md`](CHALLENGE.md)).
+This repository is a clean-slate starting point for the **Fundo Transaction AI Reviewer** challenge ([`CHALLENGE.md`](CHALLENGE.md)).
 
 It intentionally contains **only the problem specification and domain rules**—with zero pre-decided code architecture, module layout, or synthetic data—so that an independent engineering track can design, test, and benchmark a solution from scratch.
 
