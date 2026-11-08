@@ -59,7 +59,14 @@ A transaction counts as operating revenue (`is_revenue = True`) **if and only if
 
 ## 3. Challenge Deliverables
 
-Since real bank data cannot be shared, **you will first generate a realistic synthetic Plaid transaction dataset** (~2,000–2,500 transactions across ~10 small businesses over a 90-day window) junto with a baseline Legacy Keyword Engine that exhibits the flaws described above.
+### Step 0 — Architecture, Stack & File Layout Design (Prerequisite)
+Before generating data or writing application code, define your technical plan and key architectural tradeoffs (`ARCHITECTURE.md` / `IMPLEMENTATION_PLAN.md`):
+- **Runtime & Minimal Dependencies:** Select your toolchain and justify every external dependency against the radical simplicity constraint.
+- **File & Module Layout:** Define the directory structure for source code, synthetic data, cached LLM artifacts, evaluation outputs, and automated tests.
+- **Offline Replay & Telemetry Mechanism:** Decide how LLM responses, token counts, and API spend will be persisted (e.g., flat JSON/JSONL, SQLite, content-addressed store) so the entire pipeline can be replayed offline with zero API keys.
+- **Code vs. Model Architecture:** Design the exact boundary between deterministic code (triage, sanitization, financial invariant locks) and probabilistic LLM inference.
+
+Since real bank data cannot be shared, **you will then generate a realistic synthetic Plaid transaction dataset** (~2,000–2,500 transactions across ~10 small businesses over a 90-day window) along with a baseline Legacy Keyword Engine that exhibits the flaws described above.
 
 ### Part 1 — The Reviewer & The Code/Model Boundary
 Build a **Reviewer** that audits the Legacy Keyword Engine's labels on your dataset:
@@ -94,6 +101,8 @@ Calculate the **Fundo Credit Offer** for each state using the policy rule:
 - If `nsf_overdraft_count <= 5`:
   $$\text{Offer} = \max\left(0,\; 1.2 \times \text{avg\_monthly\_revenue} - 20 \times \text{other\_funders\_daily\_payment}\right)$$
 
+Quantify portfolio accuracy improvements by measuring **Monthly Revenue Dollar Error (MAE)** and **Offer Dollar Error** against Ground Truth (Legacy Baseline vs. Reviewer Corrected), as well as false-flag rates on hard negatives.
+
 #### 2.2 Error Sensitivity Analysis (2%, 5%, 10% Mislabel Rates)
 Simulate or analyze how sensitive the underwriting features and final credit offers are when **2%, 5%, and 10%** of transaction labels are corrupted/mislabeled. Compare the asymmetric financial cost of:
 - False `revenue` errors (inflating or deflating monthly revenue).
@@ -118,6 +127,9 @@ Write a concise 1-page production design covering:
 
 ## 4. Engineering & Evaluation Principles
 
-1. **One-Command Reproducibility:** The evaluator must be able to run your full pipeline, tests, and evaluation in **one or a few copy-paste commands** from the terminal, including an offline/cached mode that does not require a live API key.
+1. **One-Command Reproducibility & Live Debrief Readiness:**
+   - The evaluator must be able to run your full pipeline, tests, and evaluation in **one or a few copy-paste commands** from the terminal, including an offline/cached mode that does not require a live API key.
+   - Your entrypoint should also support auditing an external/unseen transaction file during a live technical debrief.
 2. **Simplicity & Focus on Real Business Requirements:** Discard any technology, framework, infrastructure daemon, GUI, authentication layer, or design pattern whose only justification is making the code look more "enterprise" or modular. Every line of code should directly serve transaction auditing accuracy, financial invariant safety, credit impact analysis, or testability.
-3. **AI Tool Disclosure:** Include a brief note in your deliverable disclosing what AI coding assistants/models you used and how you verified correctness.
+3. **Explicit Tradeoff Documentation (ADRs):** Document the key architectural tradeoffs you made (and what you intentionally left out) with their pros and cons.
+4. **AI Tool Disclosure:** Include a brief note in your deliverable disclosing what AI coding assistants/models you used and how you verified correctness.

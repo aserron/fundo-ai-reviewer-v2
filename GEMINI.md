@@ -23,3 +23,11 @@ It intentionally contains **only the problem specification and domain rules**—
 4. **Controlled Technical Communication (Anti-Slop):**
    - Back every claim in your deliverable report with measured numbers from your pipeline outputs (MAE, precision/recall, dollar offer shift, token spend).
    - Avoid vague marketing adjectives; state exact mechanisms, formulas, and failure modes.
+
+## Recommended Execution Sequence
+
+0. **Step 0 — Architecture & Tradeoff Blueprint (`ARCHITECTURE.md` / ADRs):** Before writing code, define the file layout, dependency choices, caching/persistence mechanism (e.g., SQLite vs. JSONL vs. custom store), batching/deduplication strategy, and TDD boundaries. Document pros and cons for each choice.
+1. **Step 1 — Synthetic Benchmark & Baseline Keyword Engine:** Generate the 90-day Plaid dataset covering all required failure modes and edge cases, plus the baseline 13-group keyword engine.
+2. **Step 2 — Hybrid Transaction Reviewer (Part 1):** Implement pre-triage, prompt-injection sanitization, LLM review with caching/telemetry, and deterministic post-LLM financial guardrails.
+3. **Step 3 — Credit Impact & Sensitivity Engine (Part 2):** Compute Before/After/Ground-Truth features, offer shifts, MAE reductions, and 2%/5%/10% mislabel simulations.
+4. **Step 4 — CLI Runner, Production Rollout & Solution Report (Part 3):** Expose one-command offline/live execution + external file review, and author the final technical deliverable.
