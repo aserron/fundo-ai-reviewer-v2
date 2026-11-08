@@ -1,6 +1,8 @@
 # Fundo AI Reviewer (v2 Parallel Track)
 
-Clean-slate specification repository for the **Fundo AI Engineer Challenge**.
+We are building an AI-assisted transaction auditing and credit impact pipeline for **Fundo**, a working capital lender for small and medium-sized businesses (SMBs). When a business applies for funding, Fundo analyzes 90 days of Plaid bank transactions using a legacy deterministic keyword engine to classify cash flows into 13 risk and revenue groups, estimate monthly operating revenue, detect competing debt obligations, and compute a credit offer. Because raw bank memos are noisy, overloaded, and prone to regex edge cases, the legacy matcher frequently misclassifies loan disbursements as revenue, wipes out legitimate card settlements due to keyword collisions, or misses non-standard overdraft and Merchant Cash Advance (MCA) signals.
+
+The high-level goal of this project is to design and build a hybrid **Deterministic + LLM Reviewer** that audits the legacy engine's classifications, enforces strict accounting invariants, and quantifies how label corrections shift real underwriting offers and risk exposure. This repository serves as a clean-slate starting point—containing only the domain rules, mathematical formulas, and challenge requirements without pre-baked architectural decisions—so a new implementation track can independently design its stack, generate a synthetic benchmark dataset, and deliver a reproducible, zero-key evaluable solution under a strict `<$10` LLM budget.
 
 ## Documents
 

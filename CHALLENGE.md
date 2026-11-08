@@ -1,5 +1,11 @@
 # Fundo AI Engineer Take-Home Challenge — Specification
 
+We are building an AI-assisted transaction auditing and credit impact pipeline for **Fundo**, a working capital lender for small and medium-sized businesses (SMBs). When a business applies for funding, Fundo analyzes 90 days of Plaid bank transactions using a legacy deterministic keyword engine to classify cash flows into 13 risk and revenue groups, estimate monthly operating revenue, detect competing debt obligations, and compute a credit offer. Because raw bank memos are noisy, overloaded, and prone to regex edge cases, the legacy matcher frequently misclassifies loan disbursements as revenue, wipes out legitimate card settlements due to keyword collisions, or misses non-standard overdraft and Merchant Cash Advance (MCA) signals.
+
+The high-level goal of this project is to design and build a hybrid **Deterministic + LLM Reviewer** that audits the legacy engine's classifications, enforces strict accounting invariants, and quantifies how label corrections shift real underwriting offers and risk exposure. Starting from a clean slate, you will define your architecture, generate a realistic synthetic Plaid benchmark dataset, build the Reviewer and credit feature engine under a strict `<$10` API budget, and deliver a one-command reproducible pipeline alongside a production rollout design.
+
+---
+
 ## 1. Background & Business Context
 
 Fundo provides working capital advances to small and medium-sized businesses (SMBs). When a business applies for funding, Fundo ingests **90 days of bank transaction history** via Plaid and runs an automated underwriting pipeline to determine creditworthiness and calculate a funding offer.
