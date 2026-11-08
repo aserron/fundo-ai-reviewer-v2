@@ -86,7 +86,7 @@ Build a **Reviewer** that audits the Legacy Keyword Engine's labels on your data
    - How to guarantee financial invariants (such as sign rules and revenue formulas) even if the LLM hallucinates.
    - How to defend against **adversarial prompt injection** inside untrusted bank counterparty memos.
    - How to avoid false alarms on **hard negatives** (e.g., legitimate B2B customer invoices from clients whose company name happens to contain words like `"Capital"`, `"Advance"`, or `"Transfer"`).
-   - How to handle **residual uncertainty** when a large inflow memo is genuinely ambiguous (e.g., an unspecified wire or peer-to-peer payment without an invoice reference).
+   - How to handle **residual uncertainty** when a large inflow memo is genuinely ambiguous (e.g., an unspecified wire or peer-to-peer payment without an invoice reference), surfacing representative edge cases for the **follow-up peer discussion stage**.
 4. **Budget Constraint:** Total LLM API spend across your development and full evaluation run must stay **strictly under $10.00 USD** (ideally orders of magnitude lower via triage, batching, and caching).
 
 ---
@@ -133,9 +133,9 @@ Write a concise 1-page production design covering:
 
 ## 4. Engineering & Operational Principles
 
-1. **One-Command Reproducibility & External File Evaluation:**
+1. **One-Command Reproducibility & Follow-Up Discussion Stage Readiness:**
    - The full pipeline, tests, and evaluation must run in **one or a few copy-paste commands** from the terminal, including an offline/cached mode that does not require a live API key.
-   - The CLI entrypoint must also support auditing an external/unseen transaction file (`JSON` or `JSONL`) for ad-hoc validation.
+   - The CLI entrypoint must also support auditing an external/unseen transaction file (`JSON` or `JSONL`) so peers can test new edge cases interactively during the **follow-up discussion stage**.
 2. **Simplicity & Focus on Real Business Requirements:** Discard any technology, framework, infrastructure daemon, GUI, authentication layer, or design pattern whose only justification is making the code look more "enterprise" or modular. Every line of code should directly serve transaction auditing accuracy, financial invariant safety, credit impact analysis, or testability.
 3. **Explicit Tradeoff Documentation (ADRs):** Document the key architectural tradeoffs made (and what was intentionally left out) with their pros and cons.
 4. **AI Tool Disclosure:** Include a brief note in the deliverable disclosing what AI coding assistants/models were used and how correctness was verified.
