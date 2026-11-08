@@ -16,3 +16,7 @@ The high-level goal of this project is to design and build a hybrid **Determinis
 2. **Step 2 — Part 1: Hybrid Transaction Reviewer:** Audit legacy labels, enforce deterministic financial invariants & prompt-injection defenses, output calibrated confidence + 5-second explanations, and support zero-key cached replay (`<$10` budget).
 3. **Step 3 — Part 2: Credit Impact & Sensitivity Analysis:** Compute before/after underwriting features, apply the offer formula & `NSF > 5` cliff, quantify Revenue & Offer MAE vs. Ground Truth, run 2%/5%/10% mislabel sensitivity analysis, and address the neobank (`R01`) and 61-day window edge cases.
 4. **Step 4 — Part 3: Production Rollout, CLI & Executive Deliverable:** Provide one-command CLI execution (including external file review for the follow-up peer discussion stage) and author the technical solution report covering shadow promotion SLOs, silent drift detection, bit-for-bit decision reproducibility, and HITL underwriter feedback.
+
+## License
+
+Released under the [MIT License](LICENSE). Copyright (c) 2026 Andrés Serrón.
